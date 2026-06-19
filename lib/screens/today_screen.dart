@@ -99,14 +99,14 @@ class _TodayScreenState extends State<TodayScreen> {
       }
 
       // Auto-log temperature (high/low for the day + current).
-      // Delete any existing temp event for this date first so we never
-      // accumulate stale single-temp entries alongside the new high/low one.
+      // Fetch FIRST — only replace the existing entry if we get fresh data.
+      // This ensures a network failure never wipes the previous reading.
       if (settings.zipcode.isNotEmpty) {
-        await DatabaseService.instance
-            .deleteTemperatureEventsForDate(_selectedDate);
         final weather =
             await WeatherService.instance.fetchWeather(settings.zipcode);
         if (weather != null) {
+          await DatabaseService.instance
+              .deleteTemperatureEventsForDate(_selectedDate);
           await DatabaseService.instance.insertEvent(EventEntry(
             date: _selectedDate,
             type: EventType.temperature,
