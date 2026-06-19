@@ -629,19 +629,12 @@ class ReportService {
         _tableCell(avg > 0 ? avg.toStringAsFixed(1) : 'None'),
         pw.Padding(
           padding: const pw.EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-          child: pw.Stack(
+          child: pw.Row(
             children: [
-              pw.Container(
-                height: 8,
-                decoration: pw.BoxDecoration(
-                  color: const PdfColor.fromInt(0xFFE0E0E0),
-                  borderRadius: pw.BorderRadius.circular(4),
-                ),
-              ),
-              pw.FractionallySizedBox(
-                widthFactor: barWidth,
-                child: pw.Container(
+              if (barWidth > 0)
+                pw.Container(
                   height: 8,
+                  width: 120 * barWidth,
                   decoration: pw.BoxDecoration(
                     color: avg >= 4
                         ? _accentRed
@@ -651,7 +644,15 @@ class ReportService {
                     borderRadius: pw.BorderRadius.circular(4),
                   ),
                 ),
-              ),
+              if (barWidth < 1.0)
+                pw.Container(
+                  height: 8,
+                  width: 120 * (1 - barWidth),
+                  decoration: pw.BoxDecoration(
+                    color: const PdfColor.fromInt(0xFFE0E0E0),
+                    borderRadius: pw.BorderRadius.circular(4),
+                  ),
+                ),
             ],
           ),
         ),

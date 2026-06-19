@@ -4,6 +4,8 @@ import '../providers/settings_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/tardis_painter.dart';
 
+const _sampleText = 'Today I felt hopeful…';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -39,7 +41,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       backgroundColor: cs.surface,
       appBar: AppBar(title: const Text('Settings')),
-      body: ListView(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           // ── App identity ─────────────────────────────────────────────────
@@ -237,17 +241,96 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 20),
 
+          // ── Journal Font ─────────────────────────────────────────────────
+          _sectionLabel(context, 'Journal Font'),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Font used in your journal entries.',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                        color: cs.onSurface.withOpacity(0.55)),
+                  ),
+                  const SizedBox(height: 14),
+                  ...kJournalFonts.map(((String, String) f) {
+                    final (fontFamily, displayName) = f;
+                    final selected = settings.journalFont == fontFamily;
+                    return GestureDetector(
+                      onTap: () => settings.setJournalFont(fontFamily),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 180),
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: selected
+                              ? cs.primaryContainer
+                              : cs.surfaceContainerLow,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: selected
+                                ? cs.primary
+                                : cs.outlineVariant.withOpacity(0.4),
+                            width: selected ? 1.5 : 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _sampleText,
+                                style: TextStyle(
+                                  fontFamily: fontFamily,
+                                  fontFamilyFallback: const ['.SF Pro Text'],
+                                  fontSize: 15,
+                                  color: selected
+                                      ? cs.primary
+                                      : cs.onSurface.withOpacity(0.7),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              displayName,
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: selected
+                                    ? cs.primary
+                                    : cs.onSurface.withOpacity(0.4),
+                                fontWeight: selected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                            if (selected) ...[
+                              const SizedBox(width: 6),
+                              Icon(Icons.check_circle,
+                                  size: 16, color: cs.primary),
+                            ],
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
           // ── About ────────────────────────────────────────────────────────
           _sectionLabel(context, 'About'),
           Card(
             child: Column(
               children: [
                 ListTile(
-                  leading: Icon(Icons.favorite_outline, color: cs.primary),
-                  title: const Text('Made with care for women\'s health'),
-                  subtitle: const Text(
-                      'Track symptoms, weight, and share insights with your doctor.'),
-                  dense: true,
+                  leading: Icon(Icons.info_outline, color: cs.primary),
+                  title: const Text('About Regeneration'),
+                  subtitle: const Text('Version 1.0.0 · Privacy · Purpose'),
+                  trailing: Icon(Icons.chevron_right,
+                      color: cs.onSurface.withOpacity(0.3)),
+                  onTap: () => Navigator.of(context).pushNamed('/about'),
                 ),
                 const Divider(height: 1),
                 ListTile(
@@ -264,6 +347,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 40),
         ],
       ),
+        ),
     );
   }
 

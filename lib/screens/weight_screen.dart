@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,19 @@ class _WeightScreenState extends State<WeightScreen> {
   List<WeightEntry> _entries = [];
   bool _loading = true;
   int _rangeDays = 90; // 30, 90, 180, 0=all
+  StreamSubscription? _sub;
 
   @override
   void initState() {
     super.initState();
     _load();
+    _sub = DatabaseService.instance.onChange.listen((_) => _load());
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
   }
 
   Future<void> _load() async {
@@ -311,6 +320,7 @@ class _WeightScreenState extends State<WeightScreen> {
                   ],
                 ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'weight_fab',
         onPressed: _showAddDialog,
         child: const Icon(Icons.add),
       ),

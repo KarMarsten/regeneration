@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/settings_provider.dart';
 import 'theme/app_theme.dart';
 import 'screens/today_screen.dart';
 import 'screens/weight_screen.dart';
 import 'screens/events_screen.dart';
+import 'screens/journal_screen.dart';
 import 'screens/report_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/about_screen.dart';
+// SettingsScreen is accessible via the ⚙ icon in Today's AppBar, not a tab.
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = SettingsProvider();
   await settings.load();
+  final prefs = await SharedPreferences.getInstance();
+  final setupComplete = prefs.getBool('setup_complete') ?? false;
+
   runApp(
     ChangeNotifierProvider.value(
       value: settings,
-      child: const RegenerationApp(),
+      child: RegenerationApp(showOnboarding: !setupComplete),
     ),
   );
 }
 
 class RegenerationApp extends StatelessWidget {
-  const RegenerationApp({super.key});
+  final bool showOnboarding;
+  const RegenerationApp({super.key, this.showOnboarding = false});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +39,13 @@ class RegenerationApp extends StatelessWidget {
       title: 'Regeneration',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getTheme(settings.colorTheme),
-      home: const MainShell(),
+      initialRoute: showOnboarding ? '/onboarding' : '/home',
+      routes: {
+        '/onboarding': (_) => const OnboardingScreen(),
+        '/home': (_) => const MainShell(),
+        '/about': (_) => const AboutScreen(),
+        '/settings': (_) => const SettingsScreen(),
+      },
     );
   }
 }
@@ -49,8 +64,8 @@ class _MainShellState extends State<MainShell> {
     TodayScreen(),
     WeightScreen(),
     EventsScreen(),
+    JournalScreen(),
     ReportScreen(),
-    SettingsScreen(),
   ];
 
   @override
@@ -84,14 +99,14 @@ class _MainShellState extends State<MainShell> {
             label: 'Events',
           ),
           NavigationDestination(
+            icon: Icon(Icons.book_outlined),
+            selectedIcon: Icon(Icons.book),
+            label: 'Journal',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.summarize_outlined),
             selectedIcon: Icon(Icons.summarize),
             label: 'Report',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Settings',
           ),
         ],
       ),

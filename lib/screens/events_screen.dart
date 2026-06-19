@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -16,20 +17,30 @@ class EventsScreen extends StatefulWidget {
 class _EventsScreenState extends State<EventsScreen> {
   List<EventEntry> _events = [];
   bool _loading = true;
+  StreamSubscription? _sub;
 
   @override
   void initState() {
     super.initState();
     _load();
+    _sub = DatabaseService.instance.onChange.listen((_) => _load());
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
   }
 
   Future<void> _load() async {
     setState(() => _loading = true);
     final all = await DatabaseService.instance.getAllEvents();
-    setState(() {
-      _events = all;
-      _loading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _events = all;
+        _loading = false;
+      });
+    }
   }
 
   Future<void> _showAddDialog({EventEntry? existing}) async {
@@ -328,6 +339,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   },
                 ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'events_fab',
         onPressed: _showAddDialog,
         icon: const Icon(Icons.add),
         label: const Text('Log Event'),

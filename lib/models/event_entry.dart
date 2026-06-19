@@ -113,7 +113,9 @@ class EventEntry {
   final DateTime date;
   final EventType type;
   final String name;
-  final double? temperature; // °F
+  final double? temperature; // °F current (legacy / fallback)
+  final double? tempHigh;   // °F daily high
+  final double? tempLow;    // °F daily low
   final String? zipcode;
   final String? notes;
 
@@ -123,6 +125,8 @@ class EventEntry {
     required this.type,
     required this.name,
     this.temperature,
+    this.tempHigh,
+    this.tempLow,
     this.zipcode,
     this.notes,
   });
@@ -135,6 +139,8 @@ class EventEntry {
         'type': type.dbValue,
         'name': name,
         'temperature': temperature,
+        'temp_high': tempHigh,
+        'temp_low': tempLow,
         'zipcode': zipcode,
         'notes': notes,
       };
@@ -147,6 +153,12 @@ class EventEntry {
         temperature: map['temperature'] != null
             ? (map['temperature'] as num).toDouble()
             : null,
+        tempHigh: map['temp_high'] != null
+            ? (map['temp_high'] as num).toDouble()
+            : null,
+        tempLow: map['temp_low'] != null
+            ? (map['temp_low'] as num).toDouble()
+            : null,
         zipcode: map['zipcode'] as String?,
         notes: map['notes'] as String?,
       );
@@ -157,6 +169,8 @@ class EventEntry {
     EventType? type,
     String? name,
     double? temperature,
+    double? tempHigh,
+    double? tempLow,
     String? zipcode,
     String? notes,
   }) =>
@@ -166,6 +180,8 @@ class EventEntry {
         type: type ?? this.type,
         name: name ?? this.name,
         temperature: temperature ?? this.temperature,
+        tempHigh: tempHigh ?? this.tempHigh,
+        tempLow: tempLow ?? this.tempLow,
         zipcode: zipcode ?? this.zipcode,
         notes: notes ?? this.notes,
       );

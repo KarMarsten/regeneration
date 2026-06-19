@@ -13,24 +13,24 @@ extension AppColorThemeExtension on AppColorTheme {
   String get label {
     switch (this) {
       case AppColorTheme.dustyBlue:
-        return 'Dusty Blue';
+        return 'TARDIS Blue';
       case AppColorTheme.purpleDark:
-        return 'Purple (Dark)';
+        return 'Time Vortex';
       case AppColorTheme.sageGreen:
-        return 'Sage Green';
+        return 'Gallifrey';
       case AppColorTheme.blushPink:
-        return 'Blush Pink';
+        return 'Rose';
       case AppColorTheme.sunshineYellow:
-        return 'Sunshine Yellow';
+        return 'Bad Wolf';
       case AppColorTheme.peachOrange:
-        return 'Peach Orange';
+        return 'Dalek';
     }
   }
 
   Color get swatch {
     switch (this) {
       case AppColorTheme.dustyBlue:
-        return const Color(0xFF7BA7BC);
+        return const Color(0xFF003B6F);
       case AppColorTheme.purpleDark:
         return const Color(0xFF9B59B6);
       case AppColorTheme.sageGreen:
@@ -90,7 +90,7 @@ class AppTheme {
         elevation: 0,
         centerTitle: true,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: colorScheme.surfaceContainerLow,
@@ -130,19 +130,21 @@ class AppTheme {
     );
   }
 
-  // ── Dusty Blue (default light) ─────────────────────────────────────────────
+  // ── TARDIS Blue (default light) ────────────────────────────────────────────
+  // Palette drawn from the TARDIS itself:
+  //   body  #003B6F  sign bar #004D99  windows #C8DFF0  lamp glow #E8F4FF
   static ThemeData _dustyBlue() => _base(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF7BA7BC),
+          seedColor: const Color(0xFF003B6F),
           brightness: Brightness.light,
-          primary: const Color(0xFF5B8FA8),
-          secondary: const Color(0xFF7BAFC4),
-          tertiary: const Color(0xFFA8C5D8),
-          surface: const Color(0xFFF4F9FC),
-          surfaceContainerLow: const Color(0xFFEAF3F8),
-          surfaceContainerHighest: const Color(0xFFD6EAF5),
+          primary: const Color(0xFF003B6F),   // TARDIS body — deep navy
+          secondary: const Color(0xFF004D99), // sign-bar blue
+          tertiary: const Color(0xFF7AB3D4),  // window-glass blue
+          surface: const Color(0xFFF0F6FC),   // lamp-glow white-blue
+          surfaceContainerLow: const Color(0xFFDDEEF8),
+          surfaceContainerHighest: const Color(0xFFC0DCF0),
           onPrimary: Colors.white,
-          onSurface: const Color(0xFF1A3344),
+          onSurface: const Color(0xFF001833), // darkest TARDIS navy
         ),
       );
 
