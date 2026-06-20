@@ -14,9 +14,16 @@
   <rect x="4" y="12" width="112" height="106" rx="5" fill="#003b6f"/>
 
   <!-- Police Box sign -->
-  <rect x="4" y="12" width="112" height="16" fill="#004d99"/>
-  <text x="60" y="23" font-family="Arial" font-weight="bold" font-size="8"
-        fill="white" text-anchor="middle" letter-spacing="2">POLICE  BOX</text>
+  <rect x="4" y="12" width="112" height="18" fill="#004d99"/>
+  <!-- Top sign: POLICE (large) | PUBLIC/CALL stacked (tiny) | BOX (large) -->
+  <text x="8" y="25" font-family="Arial" font-weight="bold" font-size="9"
+        fill="white" text-anchor="start" letter-spacing="0.3">POLICE</text>
+  <text x="60" y="20" font-family="Arial" font-weight="bold" font-size="3"
+        fill="white" text-anchor="middle" letter-spacing="0.8">PUBLIC</text>
+  <text x="60" y="25" font-family="Arial" font-weight="bold" font-size="3"
+        fill="white" text-anchor="middle" letter-spacing="0.8">CALL</text>
+  <text x="112" y="25" font-family="Arial" font-weight="bold" font-size="9"
+        fill="white" text-anchor="end" letter-spacing="0.3">BOX</text>
 
   <!-- Panel dividers -->
   <line x1="60" y1="28" x2="60" y2="118" stroke="#002855" stroke-width="2.5"/>
@@ -47,4 +54,15 @@
   <!-- Door handles -->
   <circle cx="53"  cy="97" r="3.5" fill="#c8d8e8"/>
   <circle cx="67" cy="97" r="3.5" fill="#c8d8e8"/>
+
+  <!-- White notice sign on LEFT lower door panel (like the real TARDIS) -->
+  <rect x="12" y="78" width="43" height="22" rx="1" fill="white" opacity="0.92"/>
+  <text x="33.5" y="83" font-family="Arial" font-weight="bold" font-size="3.5"
+        fill="#001a33" text-anchor="middle" letter-spacing="0.2">POLICE TELEPHONE</text>
+  <text x="33.5" y="88" font-family="Arial" font-weight="bold" font-size="4.5"
+        fill="#001a33" text-anchor="middle">FREE</text>
+  <text x="33.5" y="92.5" font-family="Arial" font-size="3"
+        fill="#001a33" text-anchor="middle">FOR USE OF PUBLIC</text>
+  <text x="33.5" y="97" font-family="Arial" font-weight="bold" font-size="3.5"
+        fill="#001a33" text-anchor="middle" letter-spacing="0.2">PULL TO OPEN</text>
 </svg>

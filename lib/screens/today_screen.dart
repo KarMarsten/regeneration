@@ -551,7 +551,10 @@ class _TodayScreenState extends State<TodayScreen> {
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
         children: [
-          const TardisWidget(size: 44),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset('assets/tardis_icon.png', width: 44, height: 44, fit: BoxFit.cover),
+          ),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -927,7 +930,10 @@ class _CheckInResponseCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TardisWidget(size: 36),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset('assets/tardis_icon.png', width: 36, height: 36, fit: BoxFit.cover),
+              ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
