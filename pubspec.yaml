@@ -1,6 +1,6 @@
 name: regeneration
-description: Regeneration — Menopause & Weight Tracker
-version: 1.0.0+1
+description: Regeneration — Tracker
+version: 1.0.0+2
 publish_to: 'none'
 
 environment:
