@@ -76,6 +76,23 @@ class AppTheme {
     }
   }
 
+  static ThemeData getDarkTheme(AppColorTheme colorTheme) {
+    switch (colorTheme) {
+      case AppColorTheme.dustyBlue:
+        return _dustyBlueDark();
+      case AppColorTheme.purpleDark:
+        return _purpleDark(); // already dark
+      case AppColorTheme.sageGreen:
+        return _sageGreenDark();
+      case AppColorTheme.blushPink:
+        return _blushPinkDark();
+      case AppColorTheme.sunshineYellow:
+        return _sunshineYellowDark();
+      case AppColorTheme.peachOrange:
+        return _peachOrangeDark();
+    }
+  }
+
   static ThemeData _base({
     required ColorScheme colorScheme,
     String? fontFamily,
@@ -225,6 +242,83 @@ class AppTheme {
           surfaceContainerHighest: const Color(0xFFF5DDD0),
           onPrimary: Colors.white,
           onSurface: const Color(0xFF3D1A08),
+        ),
+      );
+
+  // ── Dark variants ──────────────────────────────────────────────────────────
+
+  static ThemeData _dustyBlueDark() => _base(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF003B6F),
+          brightness: Brightness.dark,
+          primary: const Color(0xFF7AB3D4),
+          secondary: const Color(0xFF4D8FBF),
+          tertiary: const Color(0xFFC8DFF0),
+          surface: const Color(0xFF0A1A2E),
+          surfaceContainerLow: const Color(0xFF0F2340),
+          surfaceContainerHighest: const Color(0xFF1A3555),
+          onPrimary: const Color(0xFF001833),
+          onSurface: const Color(0xFFDDEEF8),
+        ),
+      );
+
+  static ThemeData _sageGreenDark() => _base(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF7BA68B),
+          brightness: Brightness.dark,
+          primary: const Color(0xFFADC8B5),
+          secondary: const Color(0xFF7BA68B),
+          tertiary: const Color(0xFF558B6E),
+          surface: const Color(0xFF0A1A0F),
+          surfaceContainerLow: const Color(0xFF0F2418),
+          surfaceContainerHighest: const Color(0xFF1A3826),
+          onPrimary: const Color(0xFF0A1A0F),
+          onSurface: const Color(0xFFD4EAD8),
+        ),
+      );
+
+  static ThemeData _blushPinkDark() => _base(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFE8A0B0),
+          brightness: Brightness.dark,
+          primary: const Color(0xFFF2C5D0),
+          secondary: const Color(0xFFE8A0B0),
+          tertiary: const Color(0xFFD47A92),
+          surface: const Color(0xFF1F0A10),
+          surfaceContainerLow: const Color(0xFF2E1018),
+          surfaceContainerHighest: const Color(0xFF451828),
+          onPrimary: const Color(0xFF3D1A24),
+          onSurface: const Color(0xFFFAECF0),
+        ),
+      );
+
+  static ThemeData _sunshineYellowDark() => _base(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFE8C547),
+          brightness: Brightness.dark,
+          primary: const Color(0xFFF2D96A),
+          secondary: const Color(0xFFE8C547),
+          tertiary: const Color(0xFFC9A820),
+          surface: const Color(0xFF1A1600),
+          surfaceContainerLow: const Color(0xFF262000),
+          surfaceContainerHighest: const Color(0xFF383000),
+          onPrimary: const Color(0xFF2A2000),
+          onSurface: const Color(0xFFFDF6DC),
+        ),
+      );
+
+  static ThemeData _peachOrangeDark() => _base(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFE8956D),
+          brightness: Brightness.dark,
+          primary: const Color(0xFFF2B896),
+          secondary: const Color(0xFFE8956D),
+          tertiary: const Color(0xFFD06B3D),
+          surface: const Color(0xFF1F0D00),
+          surfaceContainerLow: const Color(0xFF2E1500),
+          surfaceContainerHighest: const Color(0xFF452200),
+          onPrimary: const Color(0xFF3D1A08),
+          onSurface: const Color(0xFFFAEFE7),
         ),
       );
 }

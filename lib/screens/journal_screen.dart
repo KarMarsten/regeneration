@@ -10,17 +10,15 @@ import '../services/database_service.dart';
 
 // ── Temperature label helper ──────────────────────────────────────────────────
 
-/// Returns "High: 82° Low: 65°F" when high/low are available,
-/// falling back to "Current: X°F" for legacy entries that only stored current.
-String _tempLabel(EventEntry e) {
+/// Returns "High: 82° Low: 65°F" when high/low are available.
+/// Returns null for legacy entries that only stored current temp — callers
+/// should hide the temperature row entirely in that case.
+String? _tempLabel(EventEntry e) {
   if (e.tempHigh != null && e.tempLow != null) {
     return 'High: ${e.tempHigh!.toStringAsFixed(0)}°  '
         'Low: ${e.tempLow!.toStringAsFixed(0)}°F';
   }
-  if (e.temperature != null) {
-    return 'Current: ${e.temperature!.toStringAsFixed(0)}°F';
-  }
-  return '—';
+  return null;
 }
 
 // ── Combined day model ────────────────────────────────────────────────────────
@@ -239,7 +237,7 @@ class _DiaryEntry extends StatelessWidget {
             const SizedBox(height: 12),
 
             // ── Temperature ─────────────────────────────────────────────
-            if (day.tempEvent != null)
+            if (day.tempEvent != null && _tempLabel(day.tempEvent!) != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Row(
@@ -249,7 +247,7 @@ class _DiaryEntry extends StatelessWidget {
                         color: cs.onSurface.withOpacity(0.45)),
                     const SizedBox(width: 5),
                     Text(
-                      _tempLabel(day.tempEvent!),
+                      _tempLabel(day.tempEvent!)!,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: cs.onSurface.withOpacity(0.5),
                         fontStyle: FontStyle.italic,
@@ -624,12 +622,12 @@ class _JournalPageScreenState extends State<_JournalPageScreen> {
               const SizedBox(height: 20),
 
               // ── Temperature ────────────────────────────────────────────
-              if (tempEvent != null) ...[
+              if (tempEvent != null && _tempLabel(tempEvent) != null) ...[
                 _PageRow(
                   icon: Icons.thermostat_outlined,
                   iconColor: Colors.deepOrangeAccent,
                   child: Text(
-                    _tempLabel(tempEvent),
+                    _tempLabel(tempEvent)!,
                     style: theme.textTheme.bodyMedium?.copyWith(
                         color: cs.onSurface.withOpacity(0.6)),
                   ),

@@ -39,6 +39,8 @@ class RegenerationApp extends StatelessWidget {
       title: 'Regeneration',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getTheme(settings.colorTheme),
+      darkTheme: AppTheme.getDarkTheme(settings.colorTheme),
+      themeMode: settings.darkMode ? ThemeMode.dark : ThemeMode.light,
       initialRoute: showOnboarding ? '/onboarding' : '/home',
       routes: {
         '/onboarding': (_) => const OnboardingScreen(),

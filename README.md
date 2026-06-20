@@ -1,4 +1,4 @@
-# Regeneration 🌸
+# Regeneration ✨
 
 **Tracker** — a Flutter iOS app built for women, with love.
 

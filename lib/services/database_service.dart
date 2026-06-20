@@ -27,7 +27,7 @@ class DatabaseService {
     final path = join(dbPath, 'regeneration.db');
     return openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -97,6 +97,12 @@ class DatabaseService {
           'ALTER TABLE events ADD COLUMN temp_high REAL');
       await db.execute(
           'ALTER TABLE events ADD COLUMN temp_low REAL');
+    }
+    if (oldVersion < 4) {
+      // Remove legacy temperature events that only have current temp (no high/low).
+      // These are meaningless now that we store daily high/low instead.
+      await db.execute(
+          "DELETE FROM events WHERE type = 'temperature' AND temp_high IS NULL");
     }
   }
 

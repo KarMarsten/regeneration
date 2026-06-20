@@ -162,6 +162,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 20),
 
+          // ── Appearance ───────────────────────────────────────────────────
+          _sectionLabel(context, 'Appearance'),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                secondary: Icon(Icons.dark_mode_outlined, color: cs.primary),
+                title: const Text('Dark Mode'),
+                subtitle: const Text('Switch between light and dark'),
+                value: settings.darkMode,
+                onChanged: (v) => settings.setDarkMode(v),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
           // ── Color Theme ──────────────────────────────────────────────────
           _sectionLabel(context, 'Color Theme'),
           Card(

@@ -17,18 +17,21 @@ class SettingsProvider extends ChangeNotifier {
   static const _kZipcode = 'zipcode';
   static const _kPatientName = 'patient_name';
   static const _kJournalFont = 'journal_font';
+  static const _kDarkMode = 'dark_mode';
 
   AppColorTheme _colorTheme = AppColorTheme.dustyBlue;
   String _weightUnit = 'lbs';
   String _zipcode = '';
   String _patientName = '';
   String _journalFont = 'Noteworthy';
+  bool _darkMode = false;
 
   AppColorTheme get colorTheme => _colorTheme;
   String get weightUnit => _weightUnit;
   String get zipcode => _zipcode;
   String get patientName => _patientName;
   String get journalFont => _journalFont;
+  bool get darkMode => _darkMode;
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -38,6 +41,7 @@ class SettingsProvider extends ChangeNotifier {
     _zipcode = prefs.getString(_kZipcode) ?? '';
     _patientName = prefs.getString(_kPatientName) ?? '';
     _journalFont = prefs.getString(_kJournalFont) ?? 'Noteworthy';
+    _darkMode = prefs.getBool(_kDarkMode) ?? false;
     notifyListeners();
   }
 
@@ -73,6 +77,13 @@ class SettingsProvider extends ChangeNotifier {
     _journalFont = font;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_kJournalFont, font);
+    notifyListeners();
+  }
+
+  Future<void> setDarkMode(bool value) async {
+    _darkMode = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kDarkMode, value);
     notifyListeners();
   }
 }
