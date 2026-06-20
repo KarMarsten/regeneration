@@ -27,6 +27,7 @@ class _TodayScreenState extends State<TodayScreen> {
   bool _loading = true;
   bool _saving = false;
   bool _saved = false;
+  bool _showResponse = false;
   bool _loggedWeight = false;
   String _weightUnit = 'lbs';
   bool _logEvent = false;
@@ -123,6 +124,7 @@ class _TodayScreenState extends State<TodayScreen> {
         setState(() {
           _saved = true;
           _saving = false;
+          _showResponse = true;
           // Reset one-time flags so a second tap doesn't re-insert
           _loggedWeight = false;
           _logEvent = false;
@@ -130,13 +132,6 @@ class _TodayScreenState extends State<TodayScreen> {
         _weightCtrl.clear();
         _eventNameCtrl.clear();
         FocusScope.of(context).unfocus();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('All saved — take good care of yourself today ✨'),
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 3),
-          ),
-        );
       }
     } catch (e) {
       if (mounted) setState(() => _saving = false);
@@ -224,6 +219,13 @@ class _TodayScreenState extends State<TodayScreen> {
                 children: [
                   // ── Greeting header ───────────────────────────────────────
                   if (_isToday) _buildGreeting(theme, cs),
+
+                  // ── Post-save response card ───────────────────────────────
+                  if (_showResponse)
+                    _CheckInResponseCard(
+                      entry: _entry,
+                      onDismiss: () => setState(() => _showResponse = false),
+                    ),
 
                   // ── Q1: Overall feeling ───────────────────────────────────
                   _QuestionCard(
@@ -865,6 +867,110 @@ class _LabeledSlider extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+// ── Post-save response card ───────────────────────────────────────────────────
+
+class _CheckInResponseCard extends StatelessWidget {
+  final SymptomEntry entry;
+  final VoidCallback onDismiss;
+
+  const _CheckInResponseCard({required this.entry, required this.onDismiss});
+
+  // Returns (quote, attribution, message) based on how they're feeling
+  (String, String, String) _response() {
+    final score = entry.totalSeverity;
+    if (score <= 3) {
+      return (
+        '"Fantastic!"',
+        '— The Ninth Doctor',
+        'You\'re having a genuinely good day. Hold onto that feeling.',
+      );
+    } else if (score <= 8) {
+      return (
+        '"We\'re all stories in the end. Just make it a good one, eh?"',
+        '— The Eleventh Doctor',
+        'You\'re doing better than you think. One day at a time.',
+      );
+    } else if (score <= 14) {
+      return (
+        '"I know. Believe me, I know. It\'s hard."',
+        '— The Tenth Doctor',
+        'Today is rough. Be as kind to yourself as you\'d be to a friend.',
+      );
+    } else {
+      return (
+        '"I\'m so sorry. So, so sorry."',
+        '— The Tenth Doctor',
+        'This is a hard day. You\'re not alone in it — and it won\'t always feel this way.',
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final (quote, attr, message) = _response();
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Card(
+        color: cs.primaryContainer,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 16, 12, 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TardisWidget(size: 36),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      quote,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: cs.onPrimaryContainer,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w600,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      attr,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: cs.onPrimaryContainer.withOpacity(0.6),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      message,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: cs.onPrimaryContainer.withOpacity(0.85),
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.close, size: 18,
+                    color: cs.onPrimaryContainer.withOpacity(0.4)),
+                onPressed: onDismiss,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
